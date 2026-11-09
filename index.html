@@ -1685,7 +1685,7 @@ function bloquearEdicion(){
 }
 function aplicarModoLector(){
   document.body.classList.add('lector');
-  const s=document.getElementById('selEmp'); if(s) s.disabled=true;
+  const s=document.getElementById('selEmp'); if(s && state.empleados.length<=1) s.disabled=true;  /* con varios colaboradores autorizados, puede cambiar entre ellos */
   const rm=renderMatrix;
   renderMatrix=function(){ rm(); bloquearEdicion(); };
   const pr=patchRow;
