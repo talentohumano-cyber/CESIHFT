@@ -288,6 +288,8 @@ details.notes li{margin-bottom:4px}
   #hojaFMDJ .firmasF .nomF{font-weight:700;font-size:10px}
 }
 .firmas{display:none}
+body.cargando main > *{display:none!important}
+body.cargando main::before{content:"Cargando información…";display:block;padding:80px 20px;text-align:center;font-family:"Archivo",sans-serif;letter-spacing:.08em;text-transform:uppercase;font-size:13px;color:var(--ink-soft)}
 body.lector details.box,
 body.lector .pasteBar,
 body.lector #panelVal,
@@ -537,6 +539,9 @@ const API_URL = 'https://script.google.com/macros/s/AKfycbxvrxQTac64gMfN2dbC5YWd
 const QS = new URLSearchParams(location.search);
 const LECTOR_KEY = (QS.get('k')||'').trim();
 const MODO_LECTOR = !!LECTOR_KEY;
+document.body.classList.add('cargando');
+if(MODO_LECTOR) document.body.classList.add('lector');
+(function(){ const t=document.getElementById('storageTxt'); if(t) t.textContent='Cargando…'; })();
 const ADMIN_STORE = 'cahf_admin_key';
 function adminKey(){ try{ return localStorage.getItem(ADMIN_STORE)||''; }catch(e){ return ''; } }
 function setAdminKey(v){ try{ if(v) localStorage.setItem(ADMIN_STORE,v); else localStorage.removeItem(ADMIN_STORE); }catch(e){} }
@@ -1677,6 +1682,7 @@ function exportCsv(){
 
 /* ================= Inicio ================= */
 function mostrarBloqueo(msg){
+  document.body.classList.remove('cargando');
   document.querySelector('main').innerHTML='<section class="panel" style="padding:28px;max-width:640px;margin:40px auto"><h2 style="margin-bottom:10px">Acceso no disponible</h2><p style="margin:0">'+esc(msg)+'</p></section>';
   const t=document.getElementById('storageTxt'); if(t) t.textContent='Sin acceso';
 }
@@ -1707,6 +1713,7 @@ function agregarSalirAdmin(){
   if(MODO_LECTOR) aplicarModoLector();
   chip(); bind(); renderAll();
   agregarSalirAdmin();
+  document.body.classList.remove('cargando');
 })();
 </script>
 </body>
